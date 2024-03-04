@@ -1,3 +1,4 @@
+
 CREATE TABLE categoria (
     id_categoria INTEGER NOT NULL,
     nombre       VARCHAR2(100) NOT NULL
@@ -20,14 +21,20 @@ CREATE TABLE clientes (
 
 ALTER TABLE clientes ADD CONSTRAINT clientes_pk PRIMARY KEY ( id_cliente );
 
+CREATE TABLE detalle_de_orden (
+    orden_de_venta_id_orden INTEGER NOT NULL,
+    linea_orden             INTEGER NOT NULL,
+    vendedores_id_vendedor  INTEGER NOT NULL,
+    productos_id_producto   INTEGER NOT NULL,
+    cantidad                INTEGER NOT NULL
+);
+
+ALTER TABLE detalle_de_orden ADD CONSTRAINT detalle_de_orden_pk PRIMARY KEY ( orden_de_venta_id_orden );
+
 CREATE TABLE orden_de_venta (
-    id_orden               INTEGER NOT NULL,
-    linea_orden            INTEGER NOT NULL,
-    fecha_orden            DATE NOT NULL,
-    clientes_id_cliente    INTEGER NOT NULL,
-    vendedores_id_vendedor INTEGER NOT NULL,
-    productos_id_producto  INTEGER NOT NULL,
-    cantidad               INTEGER NOT NULL
+    id_orden            INTEGER NOT NULL,
+    fecha_orden         DATE NOT NULL,
+    clientes_id_cliente INTEGER NOT NULL
 );
 
 ALTER TABLE orden_de_venta ADD CONSTRAINT orden_de_venta_pk PRIMARY KEY ( id_orden );
@@ -55,22 +62,26 @@ CREATE TABLE vendedores (
 );
 
 ALTER TABLE vendedores ADD CONSTRAINT vendedores_pk PRIMARY KEY ( id_vendedor );
--- llaves foraneas
+
 ALTER TABLE clientes
     ADD CONSTRAINT clientes_pais_fk FOREIGN KEY ( pais_id_pais )
         REFERENCES pais ( id_pais );
 
+ALTER TABLE detalle_de_orden
+    ADD CONSTRAINT detalle_orden_orden_venta_fk FOREIGN KEY ( orden_de_venta_id_orden )
+        REFERENCES orden_de_venta ( id_orden );
+
+ALTER TABLE detalle_de_orden
+    ADD CONSTRAINT detalle_orden_productos_fk FOREIGN KEY ( productos_id_producto )
+        REFERENCES productos ( id_producto );
+
+ALTER TABLE detalle_de_orden
+    ADD CONSTRAINT detalle_orden_vendedores_fk FOREIGN KEY ( vendedores_id_vendedor )
+        REFERENCES vendedores ( id_vendedor );
+
 ALTER TABLE orden_de_venta
     ADD CONSTRAINT orden_de_venta_clientes_fk FOREIGN KEY ( clientes_id_cliente )
         REFERENCES clientes ( id_cliente );
-
-ALTER TABLE orden_de_venta
-    ADD CONSTRAINT orden_de_venta_productos_fk FOREIGN KEY ( productos_id_producto )
-        REFERENCES productos ( id_producto );
-
-ALTER TABLE orden_de_venta
-    ADD CONSTRAINT orden_de_venta_vendedores_fk FOREIGN KEY ( vendedores_id_vendedor )
-        REFERENCES vendedores ( id_vendedor );
 
 ALTER TABLE productos
     ADD CONSTRAINT productos_categoria_fk FOREIGN KEY ( categoria_id_categoria )
@@ -79,3 +90,6 @@ ALTER TABLE productos
 ALTER TABLE vendedores
     ADD CONSTRAINT vendedores_pais_fk FOREIGN KEY ( pais_id_pais )
         REFERENCES pais ( id_pais );
+
+
+

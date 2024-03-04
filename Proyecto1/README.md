@@ -9,13 +9,13 @@
 ### Modelo Conceptual
 
 
-![](/models/conceptual_model.png)
+![](models/conceptual_model.png)
 
 ### Modelo lógico
 
-![](/models/logical_model.jpg)
+![](models/logical_model.jpg)
 
 ### Modelo Relacional (Diagrama ER)
 
-![](/models/relational_model.jpg)
+![](models/relational_model.jpg)
 
