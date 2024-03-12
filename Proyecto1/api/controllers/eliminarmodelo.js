@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const oracledb = require('oracledb');
-const rutaRelativa = '../../scripts/createmodel.sql';
+const rutaRelativa = '../../scripts/deletemodel.sql';
 const path = require('path');
 // Obtener la ruta absoluta
 const rutaAbsoluta = path.resolve(__dirname, rutaRelativa);
@@ -13,7 +13,7 @@ const dbConfig = {
   };
   
 
-exports.crearmodelo = async (req, res) => {
+exports.eliminarmodelo = async (req, res) => {
     let connection;
     try {
         // Obtener una conexión a la base de datos
@@ -29,23 +29,7 @@ exports.crearmodelo = async (req, res) => {
         }
         
         
-      /*  const result = await connection.execute(
-            `SELECT COUNT(*) AS total_tablas
-             FROM USER_TABLES`
-          );
-      
-          // Obtener el valor del resultado
-          const totalTablas = result.rows[0][0];
-      
-          // Imprimir el resultado
-          if (totalTablas > 0) {
-            console.log(`La base de datos tiene ${totalTablas} tabla(s).`);
-          } else {
-            console.log('La base de datos no tiene ninguna tabla.');
-          } 
-         
-        console.log('¡CONEXION!'); */
-  
+
       } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
       } finally {

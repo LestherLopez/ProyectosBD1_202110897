@@ -4,7 +4,8 @@ const PORT = process.env.PORT || 3000;
 const cors = require('cors');
 const { initApi } =  require('./controllers/initapi')
 const { cargarmodelo } =  require('./controllers/cargarmodelo')
-const { crearmodelo } =  require('./controllers/crearmodelo')
+const { crearmodelo } =  require('./controllers/crearmodelo');
+const { eliminarmodelo } = require('./controllers/eliminarmodelo');
 app.use(express.json());
 app.use(cors());
 
@@ -59,15 +60,11 @@ app.get('/consulta10', (req, res) => {
 });
 
 
-app.get('/eliminarmodelo', (req, res) => {
-    res.send('¡Modelo eliminado!');
-});
+app.get('/eliminarmodelo', eliminarmodelo);
 
 app.get('/crearmodelo', crearmodelo);
 
-app.get('/borrarinfodb', (req, res) => {
-    res.send('¡Infromacion eliminada!');
-});
+app.get('/borrarinfodb', eliminarmodelo);
 
 app.get('/cargarmodelo', cargarmodelo);
 
