@@ -1,4 +1,3 @@
-
 CREATE TABLE categoria (
     id_categoria INTEGER NOT NULL,
     nombre       VARCHAR2(100) NOT NULL

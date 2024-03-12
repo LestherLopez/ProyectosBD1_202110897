@@ -1,11 +1,16 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const cors = require('cors');
+const { initApi } =  require('./controllers/initapi')
+const { cargarmodelo } =  require('./controllers/cargarmodelo')
+const { crearmodelo } =  require('./controllers/crearmodelo')
+app.use(express.json());
+app.use(cors());
+
 
 // Rutas
-app.get('/', (req, res) => {
-    res.send('¡Bienvenido a mi API!');
-});
+app.get('/', initApi);
 
 
 app.get('/consulta1', (req, res) => {
@@ -58,20 +63,13 @@ app.get('/eliminarmodelo', (req, res) => {
     res.send('¡Modelo eliminado!');
 });
 
-
-app.get('/crearmodelo', (req, res) => {
-    res.send('¡Modelo creado!');
-});
-
+app.get('/crearmodelo', crearmodelo);
 
 app.get('/borrarinfodb', (req, res) => {
     res.send('¡Infromacion eliminada!');
 });
 
-
-app.get('/cargarmodelo', (req, res) => {
-    res.send('¡Datos cargados al modelo!');
-});
+app.get('/cargarmodelo', cargarmodelo);
 
 
 // Iniciar el servidor
