@@ -6,6 +6,7 @@ const { initApi } =  require('./controllers/initapi')
 const { cargarmodelo } =  require('./controllers/cargarmodelo')
 const { crearmodelo } =  require('./controllers/crearmodelo');
 const { eliminarmodelo } = require('./controllers/eliminarmodelo');
+const { borrarinfodb } = require('./controllers/borrarinfodb');
 app.use(express.json());
 app.use(cors());
 
@@ -64,7 +65,7 @@ app.get('/eliminarmodelo', eliminarmodelo);
 
 app.get('/crearmodelo', crearmodelo);
 
-app.get('/borrarinfodb', eliminarmodelo);
+app.get('/borrarinfodb', borrarinfodb);
 
 app.get('/cargarmodelo', cargarmodelo);
 

@@ -1,0 +1,14 @@
+DROP TABLE tempcategoria;
+DROP TABLE tempclientes;
+DROP TABLE tempdetalle_de_orden;
+DROP TABLE temporden_de_venta;
+DROP TABLE temppais;
+DROP TABLE tempproductos;
+DROP TABLE tempvendedores;
+DELETE FROM clientes;
+DELETE FROM categoria;
+DELETE FROM detalle_de_orden;
+DELETE FROM orden_de_venta;
+DELETE FROM pais;
+DELETE FROM productos;
+DELETE FROM vendedores;
