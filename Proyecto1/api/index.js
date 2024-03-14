@@ -7,6 +7,7 @@ const { cargarmodelo } =  require('./controllers/cargarmodelo')
 const { crearmodelo } =  require('./controllers/crearmodelo');
 const { eliminarmodelo } = require('./controllers/eliminarmodelo');
 const { borrarinfodb } = require('./controllers/borrarinfodb');
+const { consulta1 } = require('./controllers/consulta1');
 app.use(express.json());
 app.use(cors());
 
@@ -15,9 +16,7 @@ app.use(cors());
 app.get('/', initApi);
 
 
-app.get('/consulta1', (req, res) => {
-    res.send('¡Consulta1 realizada!');
-});
+app.get('/consulta1', consulta1);
 
 app.get('/consulta2', (req, res) => {
     res.send('¡Consulta2 realizada!');

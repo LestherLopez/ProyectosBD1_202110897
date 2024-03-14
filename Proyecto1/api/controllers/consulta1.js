@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const oracledb = require('oracledb');
-const rutaRelativa = '../../scripts/deletemodel.sql';
+const rutaRelativa = '../../scripts/consulta1.sql';
 const path = require('path');
 // Obtener la ruta absoluta
 const rutaAbsoluta = path.resolve(__dirname, rutaRelativa);
@@ -13,7 +13,8 @@ const dbConfig = {
   };
   
 
-exports.eliminarmodelo = async (req, res) => {
+exports.consulta1 = async (req, res) => {
+    let result
     let connection;
     try {
         // Obtener una conexión a la base de datos
@@ -24,8 +25,8 @@ exports.eliminarmodelo = async (req, res) => {
         const sqlCommands = scriptWithoutComments.split(";").map(command => command.trim());
         sqlCommands.splice(-1);
         for (const query of sqlCommands) {
-            await connection.execute(query.trim());
-            console.log(`Consulta ejecutada correctamente: ${query.trim()}`);
+            result = await connection.execute(query.trim());
+       
         }
         
         
@@ -42,6 +43,15 @@ exports.eliminarmodelo = async (req, res) => {
           }
         }
       }
-
-    res.send('¡Modelo eliminado con exito!');
+      const data = {
+        idCliente: result.rows[0][0],
+        nombreCliente: result.rows[0][1],
+        apellidoCliente: result.rows[0][2],
+        pais: result.rows[0][3],
+        montoTotal: result.rows[0][4]
+      };
+      
+      // Envía el objeto como respuesta
+      res.send(data);
+   
 }

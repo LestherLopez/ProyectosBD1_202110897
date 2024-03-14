@@ -28,24 +28,6 @@ exports.crearmodelo = async (req, res) => {
             console.log(`Consulta ejecutada correctamente: ${query.trim()}`);
         }
         
-        
-      /*  const result = await connection.execute(
-            `SELECT COUNT(*) AS total_tablas
-             FROM USER_TABLES`
-          );
-      
-          // Obtener el valor del resultado
-          const totalTablas = result.rows[0][0];
-      
-          // Imprimir el resultado
-          if (totalTablas > 0) {
-            console.log(`La base de datos tiene ${totalTablas} tabla(s).`);
-          } else {
-            console.log('La base de datos no tiene ninguna tabla.');
-          } 
-         
-        console.log('¡CONEXION!'); */
-  
       } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
       } finally {

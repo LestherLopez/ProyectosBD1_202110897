@@ -15,13 +15,13 @@ CREATE TABLE clientes (
     edad         INTEGER,
     salario      INTEGER,
     genero       VARCHAR2(1),
-    pais_id_pais INTEGER NOT NULL
+    id_pais INTEGER NOT NULL
 );
 
 ALTER TABLE clientes ADD CONSTRAINT clientes_pk PRIMARY KEY ( id_cliente );
 
 CREATE TABLE detalle_de_orden (
-    orden_de_venta_id_orden INTEGER NOT NULL,
+    id_orden INTEGER NOT NULL,
     linea_orden             INTEGER NOT NULL,
     vendedores_id_vendedor  INTEGER NOT NULL,
     productos_id_producto   INTEGER NOT NULL,
@@ -57,17 +57,17 @@ ALTER TABLE productos ADD CONSTRAINT productos_pk PRIMARY KEY ( id_producto );
 CREATE TABLE vendedores (
     id_vendedor  INTEGER NOT NULL,
     nombre       VARCHAR2(30) NOT NULL,
-    pais_id_pais INTEGER NOT NULL
+    id_pais INTEGER NOT NULL
 );
 
 ALTER TABLE vendedores ADD CONSTRAINT vendedores_pk PRIMARY KEY ( id_vendedor );
 
 ALTER TABLE clientes
-    ADD CONSTRAINT clientes_pais_fk FOREIGN KEY ( pais_id_pais )
+    ADD CONSTRAINT clientes_pais_fk FOREIGN KEY ( id_pais )
         REFERENCES pais ( id_pais );
 
 ALTER TABLE detalle_de_orden
-    ADD CONSTRAINT detalle_orden_orden_venta_fk FOREIGN KEY ( orden_de_venta_id_orden )
+    ADD CONSTRAINT detalle_orden_orden_venta_fk FOREIGN KEY ( id_orden )
         REFERENCES orden_de_venta ( id_orden );
 
 ALTER TABLE detalle_de_orden
@@ -87,7 +87,7 @@ ALTER TABLE productos
         REFERENCES categoria ( id_categoria );
 
 ALTER TABLE vendedores
-    ADD CONSTRAINT vendedores_pais_fk FOREIGN KEY ( pais_id_pais )
+    ADD CONSTRAINT vendedores_pais_fk FOREIGN KEY ( id_pais )
         REFERENCES pais ( id_pais );
 
 
