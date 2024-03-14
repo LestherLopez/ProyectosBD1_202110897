@@ -28,7 +28,7 @@ CREATE TABLE detalle_de_orden (
     cantidad                INTEGER NOT NULL
 );
 
-ALTER TABLE detalle_de_orden ADD CONSTRAINT detalle_de_orden_pk PRIMARY KEY ( orden_de_venta_id_orden );
+
 
 CREATE TABLE orden_de_venta (
     id_orden            INTEGER NOT NULL,
@@ -48,7 +48,7 @@ ALTER TABLE pais ADD CONSTRAINT pais_pk PRIMARY KEY ( id_pais );
 CREATE TABLE productos (
     id_producto            INTEGER NOT NULL,
     nombre                 VARCHAR2(30) NOT NULL,
-    precio                 FLOAT NOT NULL,
+    precio                 DECIMAL(10, 2) NOT NULL,
     categoria_id_categoria INTEGER NOT NULL
 );
 
