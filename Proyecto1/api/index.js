@@ -8,6 +8,7 @@ const { crearmodelo } =  require('./controllers/crearmodelo');
 const { eliminarmodelo } = require('./controllers/eliminarmodelo');
 const { borrarinfodb } = require('./controllers/borrarinfodb');
 const { consulta1 } = require('./controllers/consulta1');
+const { consulta2 } = require('./controllers/consulta2');
 app.use(express.json());
 app.use(cors());
 
@@ -18,9 +19,7 @@ app.get('/', initApi);
 
 app.get('/consulta1', consulta1);
 
-app.get('/consulta2', (req, res) => {
-    res.send('¡Consulta2 realizada!');
-});
+app.get('/consulta2', consulta2);
 
 app.get('/consulta3', (req, res) => {
     res.send('¡Consulta3 realizada!');

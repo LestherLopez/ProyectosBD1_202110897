@@ -11,3 +11,7 @@ ON detalleo.productos_id_producto = product.id_producto
 GROUP BY c.id_cliente, c.nombre, c.apellido, p.nombre
 ORDER BY numeroveces desc
 FETCH FIRST 1 ROWS ONLY;
+/*
+Mostrar el cliente que más ha comprado. Se debe de mostrar el id del cliente,
+nombre, apellido, país y monto total.
+*/
