@@ -10,6 +10,7 @@ const { borrarinfodb } = require('./controllers/borrarinfodb');
 const { consulta1 } = require('./controllers/consulta1');
 const { consulta2 } = require('./controllers/consulta2');
 const { consulta3 } = require('./controllers/consulta3');
+const { consulta4 } = require('./controllers/consulta4');
 app.use(express.json());
 app.use(cors());
 
@@ -24,9 +25,7 @@ app.get('/consulta2', consulta2);
 
 app.get('/consulta3', consulta3);
 
-app.get('/consulta4', (req, res) => {
-    res.send('¡Consulta4 realizada!');
-});
+app.get('/consulta4', consulta4);
 
 
 app.get('/consulta5', (req, res) => {
