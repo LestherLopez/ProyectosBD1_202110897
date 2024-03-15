@@ -49,7 +49,8 @@ exports.consulta1 = async (req, res) => {
                         Nombre Cliente: ${result.rows[0][1]}
                         Apellido Cliente: ${result.rows[0][2]}
                         País: ${result.rows[0][3]}
-                        Monto Total: ${result.rows[0][4]}`;
+                        Monto Total: ${result.rows[0][4]}
+                        Veces que compró: ${result.rows[0][5]}`;
       res.send(message);
    
 }
