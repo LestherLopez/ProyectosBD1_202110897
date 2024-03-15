@@ -14,6 +14,7 @@ const { consulta4 } = require('./controllers/consulta4');
 const { consulta5 } = require('./controllers/consulta5');
 const { consulta6 } = require('./controllers/consulta6');
 const { consulta7 } = require('./controllers/consulta7');
+const { consulta8 } = require('./controllers/consulta8');
 app.use(express.json());
 app.use(cors());
 
@@ -40,9 +41,7 @@ app.get('/consulta6', consulta6);
 app.get('/consulta7', consulta7);
 
 
-app.get('/consulta8', (req, res) => {
-    res.send('¡Consulta8 realizada!');
-});
+app.get('/consulta8', consulta8);
 
 app.get('/consulta9', (req, res) => {
     res.send('¡Consulta9 realizada!');
