@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const oracledb = require('oracledb');
-const rutaRelativa = '../../scripts/consulta5.sql';
+const rutaRelativa = '../../scripts/consulta9.sql';
 const path = require('path');
 // Obtener la ruta absoluta
 const rutaAbsoluta = path.resolve(__dirname, rutaRelativa);
@@ -13,7 +13,7 @@ const dbConfig = {
   };
   
 
-exports.consulta5 = async (req, res) => {
+exports.consulta9 = async (req, res) => {
     let result
     let connection;
     try {
@@ -26,8 +26,11 @@ exports.consulta5 = async (req, res) => {
         sqlCommands.splice(-1);
         for (const query of sqlCommands) {
             result = await connection.execute(query.trim());
-         
+       
         }
+        
+        
+
       } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
       } finally {
@@ -40,14 +43,14 @@ exports.consulta5 = async (req, res) => {
           }
         }
       }
-      let message = `Top 5 de países que más han comprado en orden ascendente.\n`
-      
-      for (let i = 0; i < 5; i++) {
-          message +=       `\nId del pais: ${result.rows[i][0]}
-                            Nombre del país: ${result.rows[i][1]}
-                            Monto total: ${result.rows[i][2]}
-                            Productos comprados: ${result.rows[i][3]}\n`
-      }
+    
+      const message = ` Mes con mas ventas
+                        Numero de mes: ${result.rows[0][0]}
+                        Monto total: ${result.rows[0][1]}
+                        
+                        Mes con mas ventas
+                        Numero de mes: ${result.rows[1][0]}
+                        Monto Total: ${result.rows[1][1]}`;
       res.send(message);
    
 }

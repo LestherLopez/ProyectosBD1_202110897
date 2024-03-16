@@ -1,6 +1,6 @@
 select idp, nombrep, Monto, numeroveces
 FROM(
-    SELECT p.id_pais AS idp, p.nombre AS nombrep, SUM(products.precio*detalleo.cantidad) as Monto, COUNT(o.clientes_id_cliente) AS numeroveces
+    SELECT p.id_pais AS idp, p.nombre AS nombrep, SUM(products.precio*detalleo.cantidad) as Monto, SUM(detalleo.cantidad) AS numeroveces
     FROM pais p 
     INNER JOIN clientes c
     ON p.id_pais= c.id_pais
