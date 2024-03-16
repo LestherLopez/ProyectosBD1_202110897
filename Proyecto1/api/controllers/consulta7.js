@@ -43,8 +43,8 @@ exports.consulta7 = async (req, res) => {
       let message = `categoría más comprada por cada país\n`
       
       for (let i = 0; i < 11; i++) {
-          message +=       `\nNombre del país: ${result.rows[i][0]}
-                            Nombre de la categoria: ${result.rows[i][1]}
+          message +=       `\nNombre del país: ${result.rows[i][1]}
+                            Nombre de la categoria: ${result.rows[i][0]}
                             Cantidad Unidades compradas: ${result.rows[i][2]}\n`
       }
       res.send(message);

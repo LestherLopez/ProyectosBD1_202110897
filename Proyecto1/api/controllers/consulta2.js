@@ -31,7 +31,7 @@ exports.consulta2 = async (req, res) => {
                     Nombre Producto: ${result.rows[0][1]}
                     Categoria: ${result.rows[0][2]}
                     Cantidad de unidades: ${result.rows[0][3]}
-                    Monto Total: ${result.rows[0][4]}
+                    Monto Total: ${result.rows[0][4]}\n
                     
                     `
         result = await connection.execute(sqlCommands[1].trim());

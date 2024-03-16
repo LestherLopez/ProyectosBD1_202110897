@@ -10,3 +10,7 @@ INNER JOIN productos product
 ON product.id_producto = ov.productos_id_producto
 WHERE p.id_pais = 10
 GROUP BY EXTRACT(MONTH FROM o.fecha_orden);
+/*
+Mostrar las ventas por mes de Inglaterra. Debe de mostrar el número del mes y el
+monto.
+*/

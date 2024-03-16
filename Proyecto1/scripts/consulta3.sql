@@ -1,4 +1,4 @@
-SELECT ven.id_vendedor, ven.nombre, SUM(products.precio*detalleo.cantidad) as Monto, COUNT(ven.id_vendedor) AS numeroveces
+SELECT ven.id_vendedor, ven.nombre, SUM(products.precio*detalleo.cantidad) as Monto, SUM(detalleo.cantidad) AS numeroveces
 FROM vendedores ven
 INNER JOIN detalle_de_orden detalleo
 ON ven.id_vendedor = detalleo.vendedores_id_vendedor 

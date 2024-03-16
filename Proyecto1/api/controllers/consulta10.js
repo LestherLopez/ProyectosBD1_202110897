@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const oracledb = require('oracledb');
-const rutaRelativa = '../../scripts/consulta8.sql';
+const rutaRelativa = '../../scripts/consulta10.sql';
 const path = require('path');
 // Obtener la ruta absoluta
 const rutaAbsoluta = path.resolve(__dirname, rutaRelativa);
@@ -13,7 +13,7 @@ const dbConfig = {
   };
   
 
-exports.consulta8 = async (req, res) => {
+exports.consulta10 = async (req, res) => {
     let result
     let connection;
     try {
@@ -26,8 +26,11 @@ exports.consulta8 = async (req, res) => {
         sqlCommands.splice(-1);
         for (const query of sqlCommands) {
             result = await connection.execute(query.trim());
-         
+       
         }
+        
+        
+
       } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
       } finally {
@@ -40,12 +43,10 @@ exports.consulta8 = async (req, res) => {
           }
         }
       }
-      let message = `Ventas por mes de inglaterra\n`
-      
-      for (let i = 0; i < 12; i++) {
-          message +=       `\nNúmero de mes: ${result.rows[i][0]}
-                            Monto de venta: ${result.rows[i][1]}\n`
-      }
-      res.send(message);
+      let message = ""
+      for (let i = 0; i < 624; i++) {
+        message +=  `Id producto: ${result.rows[i][0]}, Nombre: ${result.rows[i][1]}, Monto: ${result.rows[i][2]}\n`
+    }
+    res.send(message);
    
 }
