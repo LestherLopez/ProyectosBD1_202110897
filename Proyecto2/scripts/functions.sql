@@ -1,10 +1,11 @@
-DELIMITER $$
-CREATE OR REPLACE FUNCTION validatTelefono (telefono VARCHAR2) 
-    RETURN VARCHAR2 IS telefono_valido VARCHAR2(20);
+CREATE OR REPLACE FUNCTION validarTelefono(telefono VARCHAR2)
+    RETURN VARCHAR2
+IS
+    telefono_valido VARCHAR2(20);
 BEGIN
     -- Eliminar cualquier caracter que no sea un dígito
     telefono_valido := REGEXP_REPLACE(telefono, '[^0-9]', '');
-    
+
     -- Si el número tiene más de 8 dígitos, omitir los primeros 3
     IF LENGTH(telefono_valido) > 8 THEN
         telefono_valido := SUBSTR(telefono_valido, -8);
@@ -17,28 +18,28 @@ BEGIN
 
     RETURN telefono_valido;
 END;
-DELIMITER ;
+/
 
-DELIMITER $$
-CREATE OR REPLACE FUNCTION validarEmail(inputEmail varchar(255))
-    RETURNS BOOLEAN READS SQL DATA
-    DETERMINISTIC
-    BEGIN
-        DECLARE is_valid BOOLEAN;
-        SET is_valid = FALSE;
-        -- Evaluate with REGEX if the email is valid
-    IF inputEmail REGEXP '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$' THEN
-        SET is_valid = TRUE;
+
+CREATE OR REPLACE FUNCTION validarEmail(inputEmail VARCHAR2)
+    RETURN BOOLEAN
+    IS is_valid BOOLEAN;
+BEGIN
+    is_valid := TRUE;
+    -- Evaluate with REGEXP if the email is valid
+    IF REGEXP_LIKE(inputEmail, '^[A-Za-z0-9._%\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,4}$') THEN
+        is_valid := TRUE;
+    ELSE
+        is_valid := FALSE;
     END IF;
 
-        RETURN is_valid;
-    END $$
-DELIMITER ;
-
+    RETURN is_valid;
+END;
+/
 --DROP FUNCTION ValidarLetras;
 CREATE OR REPLACE FUNCTION validarLetras(name VARCHAR2)
-    RETURN BOOLEAN IS
-    valid BOOLEAN;
+    RETURN BOOLEAN 
+    IS valid BOOLEAN;
 BEGIN
     valid := TRUE;
     

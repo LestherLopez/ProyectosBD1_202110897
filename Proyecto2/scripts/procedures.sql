@@ -14,14 +14,14 @@ IS
     descripcion_valid BOOLEAN;
     newId_Tipo NUMBER;
 BEGIN
-    -- Evaluate if the description is only letters
-    descripcion_valid := ValidarLetras(descripcion);
+  
+    descripcion_valid := validarLetras(descripcion);
 
-    -- Check if the description is valid
+
     IF NOT descripcion_valid THEN
         RAISE_APPLICATION_ERROR(-20001, 'Descripción inválida, debe contener solo letras.');
     ELSE
-        -- Insert the new record
+      
         INSERT INTO tipo_cliente (idTipo, nombre, descripcion) 
         VALUES (seq_idTipo.NEXTVAL, nombre, descripcion);
     END IF;
@@ -29,62 +29,60 @@ END;
 /
 
 -- 2. registrarCliente
-DROP PROCEDURE IF EXISTS registrarCliente;
-DELIMITER $$
-CREATE PROCEDURE registrarCliente(
-    IN idCliente NUMBER(10),
-    IN nombre VARCHAR(40),
-    IN apellidos VARCHAR(40),
-    IN telefono VARCHAR(12),
-    IN correo VARCHAR(50),
-    IN usuario INTEGER,
-    IN contraseña VARCHAR(50),
-    IN tipoCliente BIGINT
+
+CREATE OR REPLACE PROCEDURE registrarCliente(
+    idCliente IN INTEGER, --idCliente
+    nombre IN VARCHAR2,
+    apellidos IN VARCHAR2,
+    telefono IN VARCHAR2,
+    correo IN VARCHAR2,
+    usuario_name IN VARCHAR2,
+    contraseña_user IN VARCHAR2,
+    tipoCliente IN INTEGER
 )
-    BEGIN
-        DECLARE name_valid BOOLEAN;
-        DECLARE lastname_valid BOOLEAN;
-        DECLARE phone_valid   BOOLEAN;
-        DECLARE email_valid BOOLEAN;
-        DECLARE user BOOLEAN;
-        DECLARE user_password VARCHAR(50)
-        DECLARE type_client INTEGER(10);
+IS
+    name_valid BOOLEAN;
+    lastname_valid BOOLEAN;
+    phone_valid VARCHAR2(12);
+    email_valid BOOLEAN;
+    user_count INTEGER;
+    typeuser_count INTEGER;
+   
+BEGIN
+    name_valid := validarLetras(nombre); 
+    lastname_valid := validarLetras(apellidos);  --validar solo letras en nombre
+    phone_valid := validarTelefono(telefono);
+    email_valid := validarEmail(correo);  
 
-        SET date_birth = STR_TO_DATE(newBirthDay, '%d-%m-%Y');
+    SELECT COUNT(*)
+    INTO user_count
+    FROM CLIENTES
+    WHERE usuario_name = usuario;
 
-        -- Evaluate if the email is valid
-        SET email_valid = IsEmailValid(newEmail);
+    SELECT COUNT(*)
+    INTO typeuser_count
+    FROM tipo_cliente
+    WHERE idtipo = tipoCliente;
 
-        -- Get the id from "CARRERA" table
-        SET new_id_carrera = GetCareer(newCarrera);
+    IF NOT name_valid THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Nombre invalido, debe contener solo letras.');
+    ELSIF NOT lastname_valid THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Apellido invalida, debe contener solo letras.');
+    ELSIF NOT email_valid THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Correo invalido, la estructura no es correcta.');
+    ELSIF user_count > 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Usuario invalido, el usuario ya existe.');
+    ELSIF typeuser_count = 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Tipo cliente invalido, puesto que no existe.');
+    ELSE
+        INSERT INTO clientes ( idcliente, nombre, apellidos, telefono, correo, usuario, contraseña, tipo_cliente_idtipo )
+        VALUES (
+            idCliente, nombre, apellidos, phone_valid, correo, usuario_name, contraseña_user, tipoCliente
+        );
+    END IF;
+END;
+/
 
-        -- get current date
-        SET currentDate = GetDate();
-
-        -- Validate
-        IF email_valid = FALSE THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El email no es valido.';
-        ELSEIF new_id_carrera IS NULL THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La carrera no existe.';
-        ELSE
-            INSERT INTO Cliente( carnet, nombres, apellidos, fecha_nacimiento, correo, telefono, direccion, dpi, creditos, registro_creacion, id_carrera )
-                VALUES (
-                        newCarnet,
-                        newNames,
-                        newLastName,
-                        date_birth,
-                        newEmail,
-                        newPhone,
-                        newAddress,
-                        newDpi,
-                        0,
-                        currentDate,
-                        new_id_carrera
-                       );
-        END IF;
-    END;
-    $$
-DELIMITER ;
-
---registrarCliente(1001, 'Juan Isaac','Perez Lopez','22888080','micorreo@gmail.com','jisaacp2024','12345678','1' );
---registrarCliente(1002, 'Maria Isabel','Gonzalez Perez','22805050-22808080','micorreo1@gmail.com|micorreo2@gmail.com','mariauser','12345679','2' );
+/*
+Verify emails, password and cellphones in registrarCliente
+*/
