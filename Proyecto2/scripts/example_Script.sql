@@ -1,3 +1,4 @@
+ALTER SESSION SET NLS_NUMERIC_CHARACTERS = ',.';
 -- registroTipoCliuente
 --                  idtipo,     nombre,                         descripcion
 EXEC registrarTipoCliente(4, 'Cliente Extraordinario', 'Este cliente no esta definido en el enunciado es un tipo de cliente extra');
@@ -14,12 +15,12 @@ EXEC registrarTipoCuenta(7,'Cuenta Extraordinaria','Cuenta Extraordinaria a enun
 -- registro de cuenta
 --            idcuenta, montoapertura,*saldo, descripcion,     fechaapertura,otrosdetalles,idtipocuenta,idcliente
 EXEC registrarCuenta(3030206080, to_number('500,00'), to_number('800,00'), 'Apertura de cuenta con Q500','','',2,1001);
-EXEC registrarCuenta(3030206081, to_number('600.00'), to_number('600.00'), 'Apertura de cuenta con Q500','01/04/2024 07:00:00','esta apertura tiene fecha',2,1001);
+EXEC registrarCuenta(3030206081, to_number('600,00'), to_number('600,00'), 'Apertura de cuenta con Q500','01/04/2024 07:00:00','esta apertura tiene fecha',2,1001);
 
 -- registro de productoservicio
 --                    id, tipo, costo, descripcion
-crearProductoServicio(18, 1, 50.80, 'Este es un servicio el cual tiene un precio predefinido'); --servicio
-crearProductoServicio(19, 2, 0, 'Este es un producto el cual tiene un precio variable'); --producto, tiene un precio de "cero" el cual indica que es variable
+EXEC crearProductoServicio(18, 1, to_number('50,80'), 'Este es un servicio el cual tiene un precio predefinido'); --servicio
+EXEC crearProductoServicio(19, 2, 0, 'Este es un producto el cual tiene un precio variable'); --producto, tiene un precio de "cero" el cual indica que es variable
 
 -- realizar compra
 --              id,      fecha,   monto,  otrosdetalles, codProducto/Servicio, idcliente

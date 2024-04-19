@@ -15,7 +15,7 @@ ALTER TABLE clientes ADD CONSTRAINT clientes_pk PRIMARY KEY ( idcliente );
 
 CREATE TABLE compras (
     id_compra                  INTEGER NOT NULL,
-    fecha                      DATE NOT NULL,
+    fecha                      DATE,
     importe_compra             NUMBER(12, 2) NOT NULL,
     otros_detalles             VARCHAR2(40),
     producto_servicio_codigo INTEGER NOT NULL,
@@ -61,7 +61,7 @@ ALTER TABLE depositos ADD CONSTRAINT depositos_pk PRIMARY KEY ( id_deposito );
 CREATE TABLE producto_servicio (
     codigo      INTEGER NOT NULL,
     tipo        INTEGER NOT NULL,
-    costo       NUMBER(12, 2) NOT NULL,
+    costo       NUMBER(12, 2),
     descripcion VARCHAR2(100)
 );
 

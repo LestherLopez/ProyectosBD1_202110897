@@ -1,4 +1,4 @@
-ALTER SESSION SET NLS_NUMERIC_CHARACTERS = ',.';
+
 
 -- 1. crear tipo de Cliente
 CREATE SEQUENCE seq_idTipo
@@ -84,7 +84,7 @@ BEGIN
     END IF;
 END;
 /
------------------------------------------------------------------------------------------------------------------
+-- 4. registrarTipoCuenta
 CREATE SEQUENCE seq_idTipoCuenta
     START WITH 1
     INCREMENT BY 1
@@ -102,11 +102,11 @@ IS
     newId_Tipo NUMBER;
 BEGIN
         INSERT INTO tipo_cuenta (codigo, nombre, descripcion) 
-        VALUES (seq_idTipo.NEXTVAL, nombreCuenta, descripcionCuenta);
+        VALUES (seq_idTipoCuenta.NEXTVAL, nombreCuenta, descripcionCuenta);
 END;
 /
 
--- registrar Cuentas
+-- 3. registrarCuenta
 
 CREATE OR REPLACE PROCEDURE registrarCuenta(
     idCuenta IN INTEGER, --idCliente
@@ -174,6 +174,90 @@ END;
 /
 
 
+-- 5. crearProductoServicio
+CREATE OR REPLACE PROCEDURE crearProductoServicio(
+    codigoProducto IN INTEGER,
+    tipoProducto IN INTEGER,
+    costoProducto IN NUMBER,
+    descripcionProducto IN VARCHAR2
+)
+IS
+BEGIN
+    IF tipoProducto = 1 THEN
+        IF costoProducto > 0 THEN 
+            INSERT INTO producto_servicio (codigo, tipo, costo, descripcion) 
+            VALUES (codigoProducto, tipoProducto, costoProducto, descripcionProducto);
+        ELSE
+             RAISE_APPLICATION_ERROR(-20001, 'El costo es nulo, debe contener costo por ser servicio.');
+        END IF;
+       
+    ELSE
+        INSERT INTO producto_servicio (codigo, tipo, costo, descripcion) 
+        VALUES (codigoProducto, tipoProducto, costoProducto, descripcionProducto);
+    END IF;
+END;
+/
+
+
+
+--  6. realizarCompra
+CREATE OR REPLACE PROCEDURE realizarCompra(
+    idCompra IN INTEGER,
+    fechaCompra IN VARCHAR2,
+    importeCompra IN NUMBER,
+    otrosDetalles IN VARCHAR2,
+    codigoProducto IN INTEGER,
+    idCliente IN INTEGER
+)
+IS
+    idCliente_valid INTEGER;
+    prodserv_Valid INTEGER;
+    tipoProducto INTEGER;
+BEGIN
+    
+    -- validar que exista cliente
+    SELECT COUNT(*)
+    INTO idCliente_valid
+    FROM CLIENTES
+    WHERE idcliente = idCliente;
+    -- validar que exista el codigo de producto/servicio
+    SELECT COUNT(*)
+    INTO prodserv_Valid
+    FROM producto_servicio
+    WHERE codigo = codigoProducto;
+    -- obtener el tipo del producto
+    IF idCliente_valid = 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Cliente invalido, el cliente no existe.');
+    ELSIF prodserv_Valid = 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Codigo Invalido, el producto/servicio no existe.');
+    ELSE
+        SELECT tipo
+        INTO tipoProducto
+        FROM PRODUCTO_SERVICIO
+        WHERE codigo = codigoProducto;
+        -- es producto
+        IF tipoProducto = 2 THEN
+            IF importeCompra > 0 THEN 
+                INSERT INTO compras (id_compra, fecha, importe_compra, otros_detalles, producto_servicio_codigo, clientes_idcliente) 
+                VALUES (idCompra, TO_DATE(fechaCompra, 'DD/MM/YYYY'), importeCompra, otrosDetalles, codigoProducto, idCliente);
+            ELSE
+                RAISE_APPLICATION_ERROR(-20001, 'Importe compra es invalido, debe contener el importe mayor a 0 por ser producto.');
+            END IF;
+        -- es servicio
+        ELSE
+            IF importeCompra = 0  THEN 
+                INSERT INTO compras (id_compra, fecha, importe_compra, otros_detalles, producto_servicio_codigo, clientes_idcliente) 
+                VALUES (idCompra, TO_DATE(fechaCompra, 'DD/MM/YYYY'), importeCompra, otrosDetalles, codigoProducto, idCliente);
+            ELSE
+                RAISE_APPLICATION_ERROR(-20001, 'Importe compra es invalido, puesto que servicio ya cuenta con monto.');
+            END IF;
+        END IF;
+    END IF;
+END;
+/
+
+
+-- 1 servicio y 2 producto
 
 /*
 Verify emails, password and cellphones in registrarCliente!!!!!
