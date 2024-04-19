@@ -24,19 +24,19 @@ EXEC crearProductoServicio(19, 2, 0, 'Este es un producto el cual tiene un preci
 
 -- realizar compra
 --              id,      fecha,   monto,  otrosdetalles, codProducto/Servicio, idcliente
-realizarCompra(1111, '10/04/2024', 40, 'compra de servicio', 18, 1001); --aqui hay error ya que el monto deberia de ser cero por que ya tiene un precio preestablecido por ser un servicio
-realizarCompra(1112, '10/04/2024', 0, 'compra de producto', 19, 1001); --aqui hay error debido a que el monto deberia de ser > 0 ya que es un producto y no tiene un precio preestablecido
-realizarCompra(1113, '10/04/2024', 50, 'compra de producto', 19, 1001); --aqui esta correcto ya que el monto es mayor a cero y es un producto
-
+EXEC realizarCompra(1111, '10/04/2024', 40, 'compra de servicio', 18, 1001); --aqui hay error ya que el monto deberia de ser cero por que ya tiene un precio preestablecido por ser un servicio
+EXEC realizarCompra(1112, '10/04/2024', 0, 'compra de producto', 19, 1001); --aqui hay error debido a que el monto deberia de ser > 0 ya que es un producto y no tiene un precio preestablecido
+EXEC realizarCompra(1113, '10/04/2024', 50, 'compra de producto', 19, 1001); --aqui esta correcto ya que el monto es mayor a cero y es un producto
+ 
 -- realizar deposito
 --              id,      fecha,     monto,  otrosdetalles, idcliente
-realizarDeposito(1114, '10/04/2024', 100, 'deposito de dinero', 1001);
-realizarDeposito(1115, '10/04/2024', 0, 'deposito de dinero', 1001); --aqui hay error ya que el monto deberia de ser mayor a cero
+EXEC realizarDeposito(1114, '10/04/2024', 100, 'deposito de dinero', 1001);
+EXEC realizarDeposito(1115, '10/04/2024', 0, 'deposito de dinero', 1001); --aqui hay error ya que el monto deberia de ser mayor a cero
 
 -- realizar retiro
 --              id,      fecha,     monto,  otrosdetalles, idcliente
-realizarDebito(1116, '10/04/2024', 100, 'retiro de dinero', 1001);
-realizarDebito(1117, '10/04/2024', 0, 'retiro de dinero con error', 1001); --aqui hay error ya que el monto deberia de ser mayor a cero
+EXEC realizarDebito(1116, '10/04/2024', 100, 'retiro de dinero', 1001);
+EXEC realizarDebito(1117, '10/04/2024', 0, 'retiro de dinero con error', 1001); --aqui hay error ya que el monto deberia de ser mayor a cero
 
 -- tipo transaccion
 -- Se van a tener 3 tipos de transacción
@@ -46,9 +46,9 @@ realizarDebito(1117, '10/04/2024', 0, 'retiro de dinero con error', 1001); --aqu
 
 -- registrar tipo de transaccion
 --                  id, nombre, descripcion
-registrarTipoTransaccion(1, 'Compra', 'Transacción de compra');
-registrarTipoTransaccion(2, 'Deposito', 'Transacción de deposito');
-registrarTipoTransaccion(3, 'Debito', 'Transacción de debito');
+EXEC registrarTipoTransaccion(1, 'Compra', 'Transacción de compra');
+EXEC registrarTipoTransaccion(2, 'Deposito', 'Transacción de deposito');
+EXEC registrarTipoTransaccion(3, 'Debito', 'Transacción de debito');
 
 -- registrar transaccion
 --              id,      fecha,  otrosdetalles, id_tipo_transaccion, idcompra/deposito/debito, nocuenta

@@ -14,7 +14,7 @@ CREATE OR REPLACE PROCEDURE registrarTipoCliente(
 )
 IS
     descripcion_valid BOOLEAN;
-    newId_Tipo NUMBER;
+
 BEGIN
   
     descripcion_valid := validarLetras(descripcion);
@@ -99,7 +99,6 @@ CREATE OR REPLACE PROCEDURE registrarTipoCuenta(
     descripcionCuenta IN VARCHAR2
 )
 IS
-    newId_Tipo NUMBER;
 BEGIN
         INSERT INTO tipo_cuenta (codigo, nombre, descripcion) 
         VALUES (seq_idTipoCuenta.NEXTVAL, nombreCuenta, descripcionCuenta);
@@ -275,6 +274,8 @@ BEGIN
         WHERE idcliente = idCliente;
         IF idCliente_valid = 0 THEN
             RAISE_APPLICATION_ERROR(-20001, 'Cliente invalido, el cliente no existe.');
+        ELSIF montoDeposito <= 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Monto invalido, el monto debe ser mayor a 0.');
         ELSE
             INSERT INTO depositos (id_deposito, fecha, monto, otros_detalles, clientes_idcliente) 
             VALUES (idDeposito, TO_DATE(fechaDeposito, 'DD/MM/YYYY'), montoDeposito, otrosDetalles, idCliente);
@@ -302,12 +303,39 @@ BEGIN
         WHERE idcliente = idCliente;
         IF idCliente_valid = 0 THEN
             RAISE_APPLICATION_ERROR(-20001, 'Cliente invalido, el cliente no existe.');
+        ELSIF montoDebito <= 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Monto invalido, el monto debe ser mayor a 0.');
         ELSE
             INSERT INTO debito (id_debito, fecha, monto, otros_detalles, clientes_idcliente) 
             VALUES (idDebito,  TO_DATE(fechaDebito, 'DD/MM/YYYY'), montoDebito, otrosDetalles, idCliente);
         END IF;
 END;
 /
+
+
+-- 10. registrarTipoTransaccion
+CREATE SEQUENCE seq_idTipoTransaccion
+    START WITH 1
+    INCREMENT BY 1
+    NOMAXVALUE;
+--restart sequence
+--ALTER SEQUENCE seq_idTipoTransaccion RESTART;
+
+-- crear Tipo de Cuenta
+CREATE OR REPLACE PROCEDURE registrarTipoTransaccion(
+    codigoTransaccion IN NUMBER,
+    nombreTransaccion IN VARCHAR2,
+    descripcionTransaccion IN VARCHAR2
+)
+IS
+BEGIN
+        INSERT INTO tipo_transaccion (codigo_transaccion, nombre, descripcion) 
+        VALUES (seq_idTipoTransaccion.NEXTVAL, nombreTransaccion, descripcionTransaccion);
+END;
+/
+
+
+
 
 
 
