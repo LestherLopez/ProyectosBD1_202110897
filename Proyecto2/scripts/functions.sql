@@ -52,6 +52,36 @@ BEGIN
     RETURN valid;
 END;
 /
+-- valida que el valor sea mayor a 0
+CREATE OR REPLACE FUNCTION validarPositivo (
+    p_valor IN NUMBER
+)
+RETURN BOOLEAN
+IS
+BEGIN
+    IF p_valor > 0 THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END validarPositivo;
+/
+
+-- valida que el valor sea mayor o igual a 0
+CREATE OR REPLACE FUNCTION validarSaldoCuenta (
+    p_valor IN NUMBER
+)
+RETURN BOOLEAN
+IS
+BEGIN
+    IF p_valor >= 0 THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END validarSaldoCuenta;
+/
+
 
 /*DECLARE
     resultado BOOLEAN;

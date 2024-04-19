@@ -4,17 +4,17 @@ EXEC registrarTipoCliente(4, 'Cliente Extraordinario', 'Este cliente no esta def
 
 -- registros de cliente 
 --            idcliente,   nombre,    apellido,    telefono,       correo,            usuario,  contrasena,tipo
-registrarCliente(1001, 'Juan Isaac','Perez Lopez','22888080','micorreo@gmail.com','jisaacp2024','12345678','1' );
-registrarCliente(1002, 'Maria Isabel','Gonzalez Perez','22805050-22808080','micorreo1@gmail.com|micorreo2@gmail.com','mariauser','12345679','2' );
+EXEC registrarCliente(1001, 'Juan Isaac','Perez Lopez','22888080','micorreo@gmail.com','jisaacp2024','12345678','1' );
+EXEC registrarCliente(1002, 'Maria Isabel','Gonzalez Perez','22805050-22808080','micorreo1@gmail.com','mariauser','12345679','2' );
 
 -- registro de tipo de cuenta
 --                   idtipo,     nombre,            descripcion
-registrarTipoCuenta(7,'Cuenta Extraordinaria','Cuenta Extraordinaria a enunciado');
+EXEC registrarTipoCuenta(7,'Cuenta Extraordinaria','Cuenta Extraordinaria a enunciado');
 
 -- registro de cuenta
 --            idcuenta, montoapertura,*saldo, descripcion,     fechaapertura,otrosdetalles,idtipocuenta,idcliente
-registrarCuenta(3030206080, 500.00, 800.00, 'Apertura de cuenta con Q500','','',5,1001);
-registrarCuenta(3030206081, 600.00, 600.00, 'Apertura de cuenta con Q500','01/04/2024 07:00:00','esta apertura tiene fecha',5,1001);
+EXEC registrarCuenta(3030206080, to_number('500,00'), to_number('800,00'), 'Apertura de cuenta con Q500','','',2,1001);
+EXEC registrarCuenta(3030206081, to_number('600.00'), to_number('600.00'), 'Apertura de cuenta con Q500','01/04/2024 07:00:00','esta apertura tiene fecha',2,1001);
 
 -- registro de productoservicio
 --                    id, tipo, costo, descripcion

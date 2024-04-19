@@ -7,7 +7,8 @@ CREATE TABLE clientes (
     correo              VARCHAR2(40) NOT NULL,
     usuario             VARCHAR2(40) NOT NULL,
     contraseña          VARCHAR2(200) NOT NULL,
-    tipo_cliente_idtipo INTEGER NOT NULL
+    tipo_cliente_idtipo INTEGER NOT NULL,
+    fecha_creacion      DATE NOT NULL
 );
 
 ALTER TABLE clientes ADD CONSTRAINT clientes_pk PRIMARY KEY ( idcliente );
@@ -28,16 +29,12 @@ CREATE TABLE cuenta (
     monto_apertura     NUMBER(12, 2) NOT NULL,
     saldo_cuenta       NUMBER(12, 2) NOT NULL,
     descripcion        VARCHAR2(100),
-    fecha_de_apertura  DATE NOT NULL,
+    fecha_de_apertura  VARCHAR2(20) NOT NULL,
     otros_detalles     VARCHAR2(100),
     tipo_cuenta_codigo INTEGER NOT NULL,
     clientes_idcliente INTEGER NOT NULL
 );
 
-CREATE UNIQUE INDEX cuenta__idx ON
-    cuenta (
-        clientes_idcliente
-    ASC );
 
 ALTER TABLE cuenta ADD CONSTRAINT cuenta_pk PRIMARY KEY ( id_cuenta );
 
