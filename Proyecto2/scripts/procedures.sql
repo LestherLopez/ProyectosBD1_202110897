@@ -256,8 +256,34 @@ BEGIN
 END;
 /
 
+-- 7. realizarDeposito
 
--- 1 servicio y 2 producto
+CREATE OR REPLACE PROCEDURE realizarDeposito(
+    idDeposito IN NUMBER,
+    fechaDeposito IN VARCHAR2,
+    montoDeposito IN VARCHAR2,
+    otrosDetalles IN VARCHAR2,
+    idCliente IN INTEGER
+)
+IS
+    idCliente_valid NUMBER;
+BEGIN
+        -- validar que exista cliente
+        SELECT COUNT(*)
+        INTO idCliente_valid
+        FROM CLIENTES
+        WHERE idcliente = idCliente;
+        IF idCliente_valid = 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Cliente invalido, el cliente no existe.');
+        ELSE
+            INSERT INTO depositos (id_deposito, fecha, monto, otros_detalles, clientes_idcliente) 
+            VALUES (idDeposito, fechaDeposito, montoDeposito, otrosDetalles, idCliente);
+        END IF;
+END;
+/
+
+
+
 
 /*
 Verify emails, password and cellphones in registrarCliente!!!!!
