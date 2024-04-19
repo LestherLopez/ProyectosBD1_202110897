@@ -259,9 +259,9 @@ END;
 -- 7. realizarDeposito
 
 CREATE OR REPLACE PROCEDURE realizarDeposito(
-    idDeposito IN NUMBER,
-    fechaDeposito IN VARCHAR2,
-    montoDeposito IN VARCHAR2,
+    idDeposito IN INTEGER,
+    fechaDeposito IN DATE,
+    montoDeposito IN NUMBER,
     otrosDetalles IN VARCHAR2,
     idCliente IN INTEGER
 )
@@ -277,7 +277,34 @@ BEGIN
             RAISE_APPLICATION_ERROR(-20001, 'Cliente invalido, el cliente no existe.');
         ELSE
             INSERT INTO depositos (id_deposito, fecha, monto, otros_detalles, clientes_idcliente) 
-            VALUES (idDeposito, fechaDeposito, montoDeposito, otrosDetalles, idCliente);
+            VALUES (idDeposito, TO_DATE(fechaDeposito, 'DD/MM/YYYY'), montoDeposito, otrosDetalles, idCliente);
+        END IF;
+END;
+/
+
+
+-- 8. realizarDebito
+
+CREATE OR REPLACE PROCEDURE realizarDebito(
+    idDebito IN INTEGER,
+    fechaDebito IN DATE,
+    montoDebito IN NUMBER,
+    otrosDetalles IN VARCHAR2,
+    idCliente IN INTEGER
+)
+IS
+    idCliente_valid NUMBER;
+BEGIN
+        -- validar que exista cliente
+        SELECT COUNT(*)
+        INTO idCliente_valid
+        FROM CLIENTES
+        WHERE idcliente = idCliente;
+        IF idCliente_valid = 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Cliente invalido, el cliente no existe.');
+        ELSE
+            INSERT INTO debito (id_debito, fecha, monto, otros_detalles, clientes_idcliente) 
+            VALUES (idDebito,  TO_DATE(fechaDebito, 'DD/MM/YYYY'), montoDebito, otrosDetalles, idCliente);
         END IF;
 END;
 /
