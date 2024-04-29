@@ -52,7 +52,7 @@ EXEC registrarTipoTransaccion(3, 'Debito', 'Transacción de debito');
 
 -- registrar transaccion
 --              id,      fecha,  otrosdetalles, id_tipo_transaccion, idcompra/deposito/debito, nocuenta
-registrarTransaccion(1118, '10/04/2024','', 1, 1, 1113, 3030206080); -- aqui hay error debido a que no se tiene el saldo suficiente para realizar la compra
-registrarTransaccion(1115, '10/04/2024','',2, 2, 1114, 3030206080); -- se realia deposito *aqui se puede depositar a una cuenta que no es del cliente
-registrarTransaccion(1120, '10/04/2024','este si tiene detalle',3, 3, 1116, 3030206080); -- se realiza un debito
+EXEC registrarTransaccion(1118, '10/04/2024','', 1,  1113, 3030206080); -- aqui hay error debido a que no se tiene el saldo suficiente para realizar la compra
+EXEC registrarTransaccion(1115, '10/04/2024','',2,  1114, 3030206080); -- se realia deposito *aqui se puede depositar a una cuenta que no es del cliente
+EXEC registrarTransaccion(1120, '10/04/2024','este si tiene detalle',3,  1116, 3030206080); -- se realiza un debito
 

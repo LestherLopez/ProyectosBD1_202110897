@@ -321,7 +321,6 @@ CREATE SEQUENCE seq_idTipoTransaccion
 --restart sequence
 --ALTER SEQUENCE seq_idTipoTransaccion RESTART;
 
--- crear Tipo de Cuenta
 CREATE OR REPLACE PROCEDURE registrarTipoTransaccion(
     codigoTransaccion IN NUMBER,
     nombreTransaccion IN VARCHAR2,
@@ -335,7 +334,114 @@ END;
 /
 
 
+-- 9. asignarTransaccion
+CREATE SEQUENCE seq_idTransaccion
+    START WITH 1
+    INCREMENT BY 1
+    NOMAXVALUE;
+--ALTER SEQUENCE seq_idTransaccion RESTART;
+CREATE OR REPLACE PROCEDURE asignarTransaccion(
+    idTransaccion IN INTEGER,
+    fechaTransaccion IN VARCHAR2,
+    otrosDetalles IN VARCHAR2,
+    idTipoTransaccion IN INTEGER, 
+    idComDepDeb IN INTEGER,
+    nocuenta IN INTEGER
+)
+IS
+    tipoTransaccion_valid NUMBER;
+    comdepdeb_valid NUMBER;
+    cliente_id INTEGER;
+    cuenta_valid NUMBER;
+    monto_valor NUMBER;
+    cliente_saldo NUMBER;
 
+BEGIN
+    -- verificar que exista el tipo de transaccion
+    SELECT COUNT(*)
+    INTO tipoTransaccion_valid
+    FROM tipo_transaccion
+    WHERE codigo_transaccion = idTipoTransaccion;
+    -- verificar que exista la compra/deposito/debito
+    SELECT COUNT(*)
+    INTO comdepdeb_valid
+    FROM (
+        SELECT id_compra FROM compras WHERE id_compra = idComDepDeb
+        UNION ALL
+        SELECT id_debito FROM debito WHERE id_debito = idComDepDeb
+        UNION ALL
+        SELECT id_deposito FROM depositos WHERE id_deposito = idComDepDeb
+    );
+    -- verificar que corresponda al cliente
+        -- obtener el cliente
+    SELECT clientes_idcliente
+    INTO cliente_id
+    FROM (
+        SELECT clientes_idcliente FROM compras WHERE id_compra = idComDepDeb
+        UNION ALL
+        SELECT clientes_idcliente FROM debito WHERE id_debito = idComDepDeb
+        UNION ALL
+        SELECT clientes_idcliente FROM depositos WHERE id_deposito = idComDepDeb
+    );
+    SELECT COUNT(*)
+    INTO cuenta_valid
+    FROM CUENTA 
+    WHERE cliente_id = clientes_idcliente;
+   
+
+    SELECT mo
+        INTO monto_valor
+        FROM (
+            SELECT  importe_compra AS mo FROM compras WHERE id_compra = idComDepDeb
+            UNION ALL
+            SELECT monto AS mo FROM debito WHERE id_debito = idComDepDeb
+            UNION ALL
+            SELECT monto AS mo FROM depositos WHERE id_deposito = idComDepDeb
+        );
+    IF tipoTransaccion_valid = 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Tipo Transaccion invalido, el tipo de transaccion no existe.');
+    ELSIF comdepdeb_valid = 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La compra/deposito/debito no existe, ingresa un valor valido');
+    ELSE 
+        -- obtener saldo de la cuenta
+        SELECT saldo_cuenta
+        INTO cliente_saldo
+        FROM cuenta
+        WHERE id_cuenta = nocuenta;
+
+         -- obtener el monto de la compra/debito/deposito
+        
+        -- compra (verificar, cuenta y saldo)
+        IF idTipoTransaccion = 1 THEN
+            IF cuenta_valid = 0 THEN
+                RAISE_APPLICATION_ERROR(-20001, 'La cuenta no pertenece a la del cliente, ingresa un valor valido');
+            ELSIF monto_valor>cliente_saldo THEN
+                RAISE_APPLICATION_ERROR(-20001, 'Transaccion fallida, el saldo es insuficiente');
+            ELSE
+                INSERT INTO transaccion (id_transaccion, fecha, otros_detalles, tipo_transaccion_codigo, no_cuenta, compras_id_compra, depositos_id_deposito, debito_id_debito) 
+                VALUES (idTransaccion, TO_DATE(fechaTransaccion, 'DD/MM/YYYY'), otrosDetalles, idTipoTransaccion, nocuenta, idComDepDeb, NULL, NULL);
+            END IF;
+        --deposito (aqui puede ser cuenta que no es del cliente)
+        ELSIF idTipoTransaccion = 2 THEN
+        
+
+            INSERT INTO transaccion (id_transaccion, fecha, otros_detalles, tipo_transaccion_codigo, no_cuenta, compras_id_compra, depositos_id_deposito, debito_id_debito) 
+            VALUES (idTransaccion, TO_DATE(fechaTransaccion, 'DD/MM/YYYY'), otrosDetalles, idTipoTransaccion, nocuenta, NULL, idComDepDeb, NULL);
+        
+        -- debito (verificar, cuenta y saldo)
+        ELSE 
+            IF cuenta_valid = 0 THEN
+                RAISE_APPLICATION_ERROR(-20001, 'La cuenta no pertenece a la del cliente, ingresa un valor valido');
+            ELSIF monto_valor>cliente_saldo THEN
+                    RAISE_APPLICATION_ERROR(-20001, 'Transaccion fallida, el saldo es insuficiente');
+            ELSE
+                INSERT INTO transaccion (id_transaccion, fecha, otros_detalles, tipo_transaccion_codigo, no_cuenta, compras_id_compra, depositos_id_deposito, debito_id_debito) 
+                VALUES (idTransaccion, TO_DATE(fechaTransaccion, 'DD/MM/YYYY'), otrosDetalles, idTipoTransaccion, nocuenta, NULL, NULL, idComDepDeb);
+            END IF;
+        END IF;
+    END IF;
+END;
+/
 
 
 
@@ -343,4 +449,5 @@ END;
 /*
 Verify emails, password and cellphones in registrarCliente!!!!!
 verify monto apertura and floats in registrarCuenta
+Verify in transaction the errors
 */
